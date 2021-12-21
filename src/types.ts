@@ -18,7 +18,7 @@ import type { NonReactStatics } from 'hoist-non-react-statics'
 
 export type FixTypeLater = any
 
-export type EqualityFn<T> = (a: T | undefined, b: T | undefined) => boolean
+export type EqualityFn<T> = (a: T, b: T) => boolean
 
 /**
  * This interface can be augmented by users to add default types for the root state when
@@ -94,6 +94,13 @@ export type GetProps<C> = C extends ComponentType<infer P>
   : never
 
 // Applies LibraryManagedAttributes (proper handling of defaultProps
+// and propTypes).
+export type GetLibraryManagedProps<C> = JSX.LibraryManagedAttributes<
+  C,
+  GetProps<C>
+>
+
+// Applies LibraryManagedAttributes (proper handling of defaultProps
 // and propTypes), as well as defines WrappedComponent.
 export type ConnectedComponent<
   C extends ComponentType<any>,
@@ -113,7 +120,10 @@ export type InferableComponentEnhancerWithProps<TInjectedProps, TNeedsProps> = <
   component: C
 ) => ConnectedComponent<
   C,
-  DistributiveOmit<GetProps<C>, keyof Shared<TInjectedProps, GetProps<C>>> &
+  DistributiveOmit<
+    GetLibraryManagedProps<C>,
+    keyof Shared<TInjectedProps, GetLibraryManagedProps<C>>
+  > &
     TNeedsProps
 >
 
