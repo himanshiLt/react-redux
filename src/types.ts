@@ -16,6 +16,8 @@ import { Action, ActionCreator, AnyAction, Dispatch, Store } from 'redux'
 // import hoistNonReactStatics = require('hoist-non-react-statics');
 import type { NonReactStatics } from 'hoist-non-react-statics'
 
+import type { ConnectProps } from './components/connect'
+
 export type FixTypeLater = any
 
 export type EqualityFn<T> = (a: T, b: T) => boolean
@@ -124,7 +126,8 @@ export type InferableComponentEnhancerWithProps<TInjectedProps, TNeedsProps> = <
     GetLibraryManagedProps<C>,
     keyof Shared<TInjectedProps, GetLibraryManagedProps<C>>
   > &
-    TNeedsProps
+    TNeedsProps &
+    ConnectProps
 >
 
 // Injects props and removes them from the prop requirements.
