@@ -13,5 +13,4 @@ postMerge:
 postRun:
      command:
         - yarn --version
-
 version: 1.0
