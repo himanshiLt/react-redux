@@ -31,7 +31,6 @@ import {
   createSelectorHook,
   createStoreHook,
   TypedUseSelectorHook,
-  DefaultRootState,
 } from '../../src/index'
 
 import { expectType } from '../typeTestHelpers'
@@ -103,6 +102,14 @@ function TestMergedPropsInference() {
     () => ({
       merged: 'merged',
     })
+  )(MergedPropsComponent)
+
+  const ConnectedWithInferredDispatch = connect(
+    mapStateToProps,
+    undefined,
+    (stateProps, dispatchProps, ownProps) => {
+      expectType<DispatchProp<AnyAction>>(dispatchProps)
+    }
   )(MergedPropsComponent)
 }
 
@@ -837,7 +844,7 @@ function testRef() {
 function testConnectDefaultState() {
   connect((state) => {
     const s = state
-    expectType<DefaultRootState>(s)
+    expectType<unknown>(s)
     return state
   })
 

@@ -530,9 +530,7 @@ describe('React', () => {
 
         const ConnectedInner = connect(
           (state) => ({ stateThing: state }),
-          (dispatch) => ({
-            doSomething: (whatever: any) => dispatch(doSomething(whatever)),
-          }),
+          { doSomething },
           (stateProps, actionProps, parentProps: InnerPropsType) => ({
             ...stateProps,
             ...actionProps,
@@ -845,8 +843,10 @@ describe('React', () => {
             <OuterComponent ref={outerComponent} />
           </ProviderMock>
         )
-        outerComponent.current!.setFoo('BAR')
-        outerComponent.current!.setFoo('DID')
+        rtl.act(() => {
+          outerComponent.current!.setFoo('BAR')
+          outerComponent.current!.setFoo('DID')
+        })
 
         expect(invocationCount).toEqual(1)
       })
@@ -2016,6 +2016,7 @@ describe('React', () => {
             return false
           }
           render() {
+            // @ts-ignore don't care about "children" errors
             return this.props.children
           }
         }
